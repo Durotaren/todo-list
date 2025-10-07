@@ -1,0 +1,10 @@
+@import './typography.css';
+@import './reset.css';
+@import './variables.css';
+
+body {
+  font-family: 'Satoshi-Regular', sans-serif;
+  font-size: 50px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}

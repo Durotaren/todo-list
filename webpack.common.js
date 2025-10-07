@@ -26,6 +26,14 @@ module.exports = {
           filename: 'fonts/[name][ext]', // keep fonts in a fonts folder
         },
       },
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
 };
