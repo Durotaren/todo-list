@@ -1,6 +1,8 @@
 @import './typography.css';
 @import './reset.css';
 @import './variables.css';
+@import './layout.css';
+@import './components.css';
 
 body {
   font-family: 'Satoshi-Regular', sans-serif;
