@@ -6,6 +6,8 @@ export class toDo {
     this.priority = priority;
   }
 
+  static counter = 0;
+
   get fullTitle() {
     return this.title;
   }

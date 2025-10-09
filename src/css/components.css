@@ -17,15 +17,17 @@ span {
 
 .hero-text > p {
   font-size: 2.75rem;
-  font-weight: bold;
+  font-weight: 1000;
 }
 
 .hero-text p:nth-child(2) {
   font-size: 2rem;
+  font-weight: 100;
+  letter-spacing: 6px;
 }
 
 .done-counter {
-  font-size: 3.5 rem;
+  font-size: 3.5rem;
   width: 160px;
   height: 160px;
   border-radius: 100px;
@@ -56,5 +58,38 @@ input {
   height: 64px;
   background-color: var(--color-accent);
   border-radius: 50px;
+  font-weight: bold;
   color: var(--color-bg);
+}
+
+.task {
+  min-width: 600px;
+  height: 88px;
+  border: 1px solid var(--color-text);
+  border-radius: 16px;
+  background-color: var(--color-input);
+}
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-accent);
+  border-radius: 50px;
+}
+
+.circle-done {
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-done);
+  border-radius: 50px;
+}
+
+.task-name {
+  font-size: 2.25rem;
+  font-weight: 1000;
+  margin-top: -5px;
+}
+
+.done {
+  text-decoration: line-through;
 }

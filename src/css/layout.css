@@ -9,7 +9,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 48px;
+  margin-top: 32px;
+  gap: 48px;
 }
 
 .main-container {
@@ -27,7 +28,8 @@
 
 .input-field {
   display: flex;
-  gap: 72px;
+  gap: 24px;
+  justify-content: space-around;
   align-items: center;
 }
 
@@ -35,4 +37,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.tasks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.task-main {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding-left: 16px;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.svgs {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-right: 16px;
+  gap: 8px;
 }
