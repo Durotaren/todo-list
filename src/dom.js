@@ -35,6 +35,7 @@ export const dom = (function () {
     library.push(task);
     closeModal();
     input.value = '';
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     console.log(library);
     console.log(ToDo.counter);
   }
@@ -57,6 +58,6 @@ export const dom = (function () {
     const closeBtn = document.querySelector('.close-btn');
     const dialog = document.querySelector('dialog');
     closeBtn.addEventListener('click', () => dialog.close());
-    dialog.showModal();
+    // dialog.showModal();
   }
 })();
