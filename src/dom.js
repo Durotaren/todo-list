@@ -1,10 +1,9 @@
 import { ToDo } from './todo';
 import editIcon from './assets/edit.svg';
 import trashIcon from './assets/trash.svg';
+import library from './storage.js';
 
 export const dom = (function () {
-  const library = [];
-
   const addBtn = document.querySelector('.plus-sign');
 
   addBtn.addEventListener('click', () => {
@@ -13,6 +12,10 @@ export const dom = (function () {
 
   function createTask() {
     const input = document.getElementById('todo-input');
+    if (input.value === '') {
+      alert('Please enter a Title for your Task');
+      return;
+    }
     const taskContainer = document.querySelector('.tasks-container');
     const taskDiv = document.createElement('div');
     taskDiv.classList.add('task');
@@ -24,6 +27,19 @@ export const dom = (function () {
     taskName.classList.add('task-name');
     taskName.textContent = input.value;
 
+    let svgs = createSvgs();
+    taskMain.append(circle, taskName);
+    taskDiv.append(taskMain, svgs);
+    taskContainer.append(taskDiv);
+    let task = new ToDo(input.value);
+    library.push(task);
+    closeModal();
+    input.value = '';
+    console.log(library);
+    console.log(ToDo.counter);
+  }
+
+  function createSvgs() {
     const svgs = document.createElement('div');
     svgs.classList.add('svgs');
     const svg1 = document.createElement('img');
@@ -34,13 +50,13 @@ export const dom = (function () {
     svg2.classList.add('svg');
 
     svgs.append(svg1, svg2);
-    taskMain.append(circle, taskName);
-    taskDiv.append(taskMain, svgs);
-    taskContainer.append(taskDiv);
-    let task = new ToDo(input.value);
-    library.push(task);
-    console.log(task);
-    input.value = '';
-    console.log(library);
+    return svgs;
+  }
+
+  function closeModal() {
+    const closeBtn = document.querySelector('.close-btn');
+    const dialog = document.querySelector('dialog');
+    closeBtn.addEventListener('click', () => dialog.close());
+    dialog.showModal();
   }
 })();
