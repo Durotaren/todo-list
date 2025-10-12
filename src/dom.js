@@ -38,15 +38,16 @@ const dom = (function () {
     taskMain.classList.add('task-main');
     const circle = document.createElement('div');
     circle.classList.add('circle');
+    const taskName = document.createElement('div');
+    taskName.classList.add('task-name');
+    taskName.textContent = title;
     circle.addEventListener('click', () => {
       taskDiv.classList.toggle('completed');
       circle.className === 'circle'
         ? (circle.className = 'circle-done')
         : (circle.className = 'circle');
+      taskName.classList.toggle('done');
     });
-    const taskName = document.createElement('div');
-    taskName.classList.add('task-name');
-    taskName.textContent = title;
 
     let svgs = createSvgs(id);
 
