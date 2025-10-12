@@ -1,6 +1,15 @@
-const library = (function () {
-  const library = [];
-  return library;
-})();
+import { ToDo } from './todo';
 
-export default library;
+const library = [];
+
+const todoManager = {
+  addTodo(title, description, dueDate, priority) {
+    const task = new ToDo(title, description, dueDate, priority);
+    library.push(task);
+    return task;
+  },
+
+  removeTask(index) {
+    library.splice(index, 1);
+  },
+};

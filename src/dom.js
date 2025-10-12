@@ -1,18 +1,20 @@
-import { ToDo } from './todo';
 import editIcon from './assets/edit.svg';
 import trashIcon from './assets/trash.svg';
-import library from './storage.js';
+
+const input = document.getElementById('todo-input');
+const addBtn = document.querySelector('.plus-sign');
+const dialog = document.querySelector('dialog');
+const closeBtn = document.querySelector('.close-btn');
 
 export const dom = (function () {
-  const addBtn = document.querySelector('.plus-sign');
-
   addBtn.addEventListener('click', () => {
-    createTask();
+    dialog.showModal();
   });
 
+  closeBtn.addEventListener('click', () => dialog.close());
+
   function createTask() {
-    const input = document.getElementById('todo-input');
-    if (input.value === '') {
+    if (!input.value.trim()) {
       alert('Please enter a Title for your Task');
       return;
     }
@@ -31,13 +33,9 @@ export const dom = (function () {
     taskMain.append(circle, taskName);
     taskDiv.append(taskMain, svgs);
     taskContainer.append(taskDiv);
-    let task = new ToDo(input.value);
-    library.push(task);
-    closeModal();
     input.value = '';
+    dialog.closeModal();
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    console.log(library);
-    console.log(ToDo.counter);
   }
 
   function createSvgs() {
@@ -52,12 +50,5 @@ export const dom = (function () {
 
     svgs.append(svg1, svg2);
     return svgs;
-  }
-
-  function closeModal() {
-    const closeBtn = document.querySelector('.close-btn');
-    const dialog = document.querySelector('dialog');
-    closeBtn.addEventListener('click', () => dialog.close());
-    // dialog.showModal();
   }
 })();
