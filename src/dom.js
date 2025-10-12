@@ -1,23 +1,36 @@
-import editIcon from './assets/edit.svg';
 import trashIcon from './assets/trash.svg';
+import { todoManager } from './storage.js';
 
 const input = document.getElementById('todo-input');
 const addBtn = document.querySelector('.plus-sign');
 const dialog = document.querySelector('dialog');
 const closeBtn = document.querySelector('.close-btn');
+const submitBtn = document.querySelector('.submit-btn');
+const deleteBtns = document.querySelectorAll('.svg-delete');
 
-export const dom = (function () {
+const dom = (function () {
   addBtn.addEventListener('click', () => {
+    if (!input.value.trim()) {
+      alert('Please enter a Title for your Task');
+      return;
+    }
     dialog.showModal();
   });
 
   closeBtn.addEventListener('click', () => dialog.close());
 
-  function createTask() {
-    if (!input.value.trim()) {
-      alert('Please enter a Title for your Task');
-      return;
-    }
+  submitBtn.addEventListener('click', () => {
+    let dueDate = document.getElementById('due-date');
+    let priority = document.getElementById('priority');
+    const id = crypto.randomUUID();
+    dueDate.value = '';
+    priority.value = '';
+    todoManager.addTodo(input.value, dueDate.value, priority.value, id);
+    console.log(todoManager.getAll());
+    createTask(input.value, id);
+  });
+
+  function createTask(title, id) {
     const taskContainer = document.querySelector('.tasks-container');
     const taskDiv = document.createElement('div');
     taskDiv.classList.add('task');
@@ -25,30 +38,41 @@ export const dom = (function () {
     taskMain.classList.add('task-main');
     const circle = document.createElement('div');
     circle.classList.add('circle');
+    circle.addEventListener('click', () => {
+      taskDiv.classList.toggle('completed');
+      circle.className === 'circle'
+        ? (circle.className = 'circle-done')
+        : (circle.className = 'circle');
+    });
     const taskName = document.createElement('div');
     taskName.classList.add('task-name');
-    taskName.textContent = input.value;
+    taskName.textContent = title;
 
-    let svgs = createSvgs();
+    let svgs = createSvgs(id);
+
+    svgs.addEventListener('click', () => {
+      todoManager.removeTodo(svgs.dataset.id);
+      taskDiv.remove();
+      console.log(todoManager.getAll());
+    });
+
     taskMain.append(circle, taskName);
     taskDiv.append(taskMain, svgs);
     taskContainer.append(taskDiv);
     input.value = '';
-    dialog.closeModal();
+    dialog.close();
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
   }
 
-  function createSvgs() {
+  function createSvgs(id) {
     const svgs = document.createElement('div');
     svgs.classList.add('svgs');
-    const svg1 = document.createElement('img');
-    svg1.src = editIcon;
-    svg1.classList.add('svg');
     const svg2 = document.createElement('img');
     svg2.src = trashIcon;
-    svg2.classList.add('svg');
+    svg2.classList.add('svg-delete');
+    svgs.dataset.id = id;
 
-    svgs.append(svg1, svg2);
+    svgs.append(svg2);
     return svgs;
   }
 })();

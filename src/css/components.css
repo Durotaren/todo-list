@@ -107,7 +107,8 @@ input {
   box-shadow: 0 6px 12px var(--color-done);
 }
 
-.svg {
+.svg-delete,
+.svg-edit {
   height: 50px;
   width: 40px;
 }

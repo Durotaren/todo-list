@@ -1,15 +1,20 @@
 import { ToDo } from './todo';
 
-const library = [];
+const projects = [];
+let library = [];
 
-const todoManager = {
-  addTodo(title, description, dueDate, priority) {
-    const task = new ToDo(title, description, dueDate, priority);
+export const todoManager = {
+  addTodo(title, dueDate, priority, id) {
+    const task = new ToDo(title, dueDate, priority, id);
     library.push(task);
     return task;
   },
 
-  removeTask(index) {
-    library.splice(index, 1);
+  getAll() {
+    return library;
+  },
+
+  removeTodo(id) {
+    library = library.filter((toDo) => toDo.uniqueId !== id);
   },
 };
