@@ -1,14 +1,24 @@
 import trashIcon from './assets/trash.svg';
 import { todoManager } from './storage.js';
 
-const input = document.getElementById('todo-input');
-const addBtn = document.querySelector('.plus-sign');
-const dialog = document.querySelector('dialog');
-const closeBtn = document.querySelector('.close-btn');
-const submitBtn = document.querySelector('.submit-btn');
-const deleteBtns = document.querySelectorAll('.svg-delete');
-
 const dom = (function () {
+  const input = document.getElementById('todo-input');
+  const addBtn = document.querySelector('.plus-sign');
+  const dialog = document.querySelector('dialog');
+  const closeBtn = document.querySelector('.close-btn');
+  const submitBtn = document.querySelector('.submit-btn');
+  const tasksContainer = document.querySelector('.tasks-container');
+
+  tasksContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('svg-delete')) {
+      const taskDiv = e.target.closest('.task');
+      const id = e.target.closest('.svgs').dataset.id;
+      todoManager.removeTodo(id);
+      taskDiv.remove();
+      console.log(todoManager.getAll());
+    }
+  });
+
   addBtn.addEventListener('click', () => {
     if (!input.value.trim()) {
       alert('Please enter a Title for your Task');
@@ -49,13 +59,13 @@ const dom = (function () {
       taskName.classList.toggle('done');
     });
 
-    let svgs = createSvgs(id);
+    // let svgs = createSvgs(id);
 
-    svgs.addEventListener('click', () => {
-      todoManager.removeTodo(svgs.dataset.id);
-      taskDiv.remove();
-      console.log(todoManager.getAll());
-    });
+    // svgs.addEventListener('click', () => {
+    //   todoManager.removeTodo(svgs.dataset.id);
+    //   taskDiv.remove();
+    //   console.log(todoManager.getAll());
+    // });
 
     taskMain.append(circle, taskName);
     taskDiv.append(taskMain, svgs);

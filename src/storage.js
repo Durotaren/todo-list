@@ -1,7 +1,11 @@
 import { ToDo } from './todo';
 
 const projects = [];
-let library = [];
+let library = [
+  { title: 'Wash the dishes', dueDate: '', priority: '', uniqueId: '1' },
+  { title: 'Walk the dog', dueDate: '', priority: '', uniqueId: '2' },
+  { title: 'Buy groceries', dueDate: '', priority: '', uniqueId: '3' },
+];
 
 export const todoManager = {
   addTodo(title, dueDate, priority, id) {
