@@ -156,3 +156,15 @@ dialog label {
   padding: 8px;
   font-weight: 1000;
 }
+
+.high-prio {
+  color: var(--color-accent);
+}
+
+.low-prio {
+  color: var(--color-done);
+}
+
+.task:nth-child(1) {
+  position: relative;
+}

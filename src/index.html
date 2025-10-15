@@ -17,7 +17,7 @@
           <label for="priority">Priority:</label>
         </div>
         <div>
-          <input type="text" id="due-date" />
+          <input type="date" id="due-date" />
           <input type="text" id="priority" />
         </div>
       </form>
@@ -52,17 +52,42 @@
       <div class="tasks-container">
         <div class="task">
           <div class="task-main">
+            <div
+              style="
+                position: absolute;
+                left: -250px;
+                font-size: 1.5rem;
+                display: flex;
+                align-items: center;
+              "
+            >
+              <p>Click the Circle!</p>
+              <img src="./assets/arrow.svg" alt="" height="72px" width="72px" />
+            </div>
+
             <div class="circle"></div>
             <div class="task-name">Wash the dishes</div>
+            <div class="datePrioContainer" style="padding-left: 16px">
+              <div style="font-size: 1.25rem">Feb 22 2090</div>
+              <div class="high-prio" style="font-size: 1.25rem">
+                High priority
+              </div>
+            </div>
           </div>
           <div class="svgs" data-id="1">
             <img src="./assets/trash.svg" alt="Trash Icon" class="svg-delete" />
           </div>
         </div>
         <div class="task completed">
-          <div class="task-main">
+          <div class="task-main done">
             <div class="circle-done"></div>
-            <div class="task-name done">Walk the dog</div>
+            <div class="task-name">Walk the dog</div>
+            <div style="padding-left: 16px">
+              <div style="font-size: 1.25rem">22/02/2090</div>
+              <div class="low-prio" style="font-size: 1.25rem">
+                Low priority
+              </div>
+            </div>
           </div>
           <div class="svgs" data-id="2">
             <img src="./assets/trash.svg" alt="Trash Icon" class="svg-delete" />

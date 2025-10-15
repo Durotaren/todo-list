@@ -9,13 +9,35 @@ const dom = (function () {
   const submitBtn = document.querySelector('.submit-btn');
   const tasksContainer = document.querySelector('.tasks-container');
 
+  const circleFirst = document.querySelector('.circle');
+  console.log(circleFirst);
+
+  function handleCircleClick() {
+    circleFirst.previousElementSibling.remove();
+    circleFirst.removeEventListener('click', handleCircleClick);
+  }
+
+  circleFirst.addEventListener('click', handleCircleClick);
+
   tasksContainer.addEventListener('click', (e) => {
+    const taskDiv = e.target.closest('.task');
     if (e.target.classList.contains('svg-delete')) {
-      const taskDiv = e.target.closest('.task');
       const id = e.target.closest('.svgs').dataset.id;
       todoManager.removeTodo(id);
       taskDiv.remove();
       console.log(todoManager.getAll());
+    } else if (
+      e.target.classList.contains('circle') ||
+      e.target.classList.contains('circle-done')
+    ) {
+      const circle = e.target;
+      const taskMain = e.target.closest('.task-main');
+      taskDiv.classList.toggle('completed');
+
+      circle.className === 'circle'
+        ? (circle.className = 'circle-done')
+        : (circle.className = 'circle');
+      taskMain.classList.toggle('done');
     }
   });
 
@@ -33,9 +55,9 @@ const dom = (function () {
     let dueDate = document.getElementById('due-date');
     let priority = document.getElementById('priority');
     const id = crypto.randomUUID();
+    todoManager.addTodo(input.value, dueDate.value, priority.value, id);
     dueDate.value = '';
     priority.value = '';
-    todoManager.addTodo(input.value, dueDate.value, priority.value, id);
     console.log(todoManager.getAll());
     createTask(input.value, id);
   });
@@ -51,21 +73,8 @@ const dom = (function () {
     const taskName = document.createElement('div');
     taskName.classList.add('task-name');
     taskName.textContent = title;
-    circle.addEventListener('click', () => {
-      taskDiv.classList.toggle('completed');
-      circle.className === 'circle'
-        ? (circle.className = 'circle-done')
-        : (circle.className = 'circle');
-      taskName.classList.toggle('done');
-    });
 
-    // let svgs = createSvgs(id);
-
-    // svgs.addEventListener('click', () => {
-    //   todoManager.removeTodo(svgs.dataset.id);
-    //   taskDiv.remove();
-    //   console.log(todoManager.getAll());
-    // });
+    let svgs = createSvgs(id);
 
     taskMain.append(circle, taskName);
     taskDiv.append(taskMain, svgs);
