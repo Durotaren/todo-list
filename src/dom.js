@@ -1,4 +1,5 @@
 import trashIcon from './assets/trash.svg';
+import { format } from 'date-fns';
 import { todoManager } from './storage.js';
 
 const dom = (function () {
@@ -10,7 +11,6 @@ const dom = (function () {
   const tasksContainer = document.querySelector('.tasks-container');
 
   const circleFirst = document.querySelector('.circle');
-  console.log(circleFirst);
 
   function handleCircleClick() {
     circleFirst.previousElementSibling.remove();
@@ -55,14 +55,20 @@ const dom = (function () {
     let dueDate = document.getElementById('due-date');
     let priority = document.getElementById('priority');
     const id = crypto.randomUUID();
-    todoManager.addTodo(input.value, dueDate.value, priority.value, id);
+    const toDo = todoManager.addTodo(
+      input.value,
+      dueDate.value,
+      priority.value,
+      id
+    );
+
+    const parsedDate = format(new Date(toDo.dueDate), 'MMM dd, yyyy');
+
+    createTask(toDo.title, toDo.uniqueId, parsedDate, toDo.priority);
     dueDate.value = '';
-    priority.value = '';
-    console.log(todoManager.getAll());
-    createTask(input.value, id);
   });
 
-  function createTask(title, id) {
+  function createTask(title, id, dueDate, priority) {
     const taskContainer = document.querySelector('.tasks-container');
     const taskDiv = document.createElement('div');
     taskDiv.classList.add('task');
@@ -74,9 +80,20 @@ const dom = (function () {
     taskName.classList.add('task-name');
     taskName.textContent = title;
 
+    const selectContainer = document.createElement('div');
+    selectContainer.classList.add('date-prio-container');
+    const dateDiv = document.createElement('div');
+    dateDiv.textContent = dueDate;
+
+    const priorityDiv = document.createElement('div');
+    priorityDiv.textContent = priority;
+    priorityDiv.className =
+      priority === 'High priority' ? 'high-prio' : 'low-prio';
+
     let svgs = createSvgs(id);
 
-    taskMain.append(circle, taskName);
+    selectContainer.append(dateDiv, priorityDiv);
+    taskMain.append(circle, taskName, selectContainer);
     taskDiv.append(taskMain, svgs);
     taskContainer.append(taskDiv);
     input.value = '';

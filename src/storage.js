@@ -1,6 +1,7 @@
 import { ToDo } from './todo';
 
-const projects = [];
+let projects = [];
+
 let library = [
   { title: 'Wash the dishes', dueDate: '', priority: '', uniqueId: '1' },
   { title: 'Walk the dog', dueDate: '', priority: '', uniqueId: '2' },

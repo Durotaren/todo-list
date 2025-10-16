@@ -168,3 +168,33 @@ dialog label {
 .task:nth-child(1) {
   position: relative;
 }
+
+.arrow-container {
+  position: absolute;
+  left: -250px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.arrow-svg {
+  height: 72px;
+  width: 72px;
+}
+
+.date-prio-container {
+  padding-left: 16px;
+  font-size: 1.25rem;
+}
+
+#priority {
+  background-color: var(--color-input);
+  border: none;
+  height: 32px;
+  border-radius: 5px;
+  font-size: 1.25rem;
+}
+
+select:focus {
+  outline: none;
+}
