@@ -1,5 +1,6 @@
 import trashIcon from './assets/trash.svg';
-import { format } from 'date-fns';
+import arrowIcon from './assets/arrow.svg';
+import { format, isValid } from 'date-fns';
 import { todoManager } from './storage.js';
 
 const dom = (function () {
@@ -9,6 +10,13 @@ const dom = (function () {
   const closeBtn = document.querySelector('.close-btn');
   const submitBtn = document.querySelector('.submit-btn');
   const tasksContainer = document.querySelector('.tasks-container');
+
+  let counter = 0;
+
+  todoManager.getAll().forEach((item) => {
+    createTask(item.title, item.uniqueId, item.dueDate, item.priority);
+    counter++;
+  });
 
   const circleFirst = document.querySelector('.circle');
 
@@ -52,24 +60,39 @@ const dom = (function () {
   closeBtn.addEventListener('click', () => dialog.close());
 
   submitBtn.addEventListener('click', () => {
-    let dueDate = document.getElementById('due-date');
-    let priority = document.getElementById('priority');
+    const dueDate = document.getElementById('due-date');
+    const priority = document.getElementById('priority');
     const id = crypto.randomUUID();
-    const toDo = todoManager.addTodo(
+
+    const toDoList = todoManager.addTodo(
       input.value,
       dueDate.value,
       priority.value,
       id
     );
 
-    const parsedDate = format(new Date(toDo.dueDate), 'MMM dd, yyyy');
+    let formattedDate;
 
-    createTask(toDo.title, toDo.uniqueId, parsedDate, toDo.priority);
+    if (toDoList.dueDate) {
+      const parsedDate = new Date(toDoList.dueDate);
+      if (isValid(parsedDate)) {
+        formattedDate = format(parsedDate, 'MMM dd yyyy');
+      }
+    }
+
+    createTask(
+      toDoList.title,
+      toDoList.uniqueId,
+      formattedDate,
+      toDoList.priority
+    );
+    console.log(todoManager.getAll());
+
     dueDate.value = '';
+    priority.value = 'High priority';
   });
 
   function createTask(title, id, dueDate, priority) {
-    const taskContainer = document.querySelector('.tasks-container');
     const taskDiv = document.createElement('div');
     taskDiv.classList.add('task');
     const taskMain = document.createElement('div');
@@ -92,10 +115,27 @@ const dom = (function () {
 
     let svgs = createSvgs(id);
 
+    if (counter === 0) {
+      const arrowContainer = document.createElement('div');
+      arrowContainer.className = 'arrow-container';
+      const clickPara = document.createElement('p');
+      clickPara.textContent = 'Click the Circle!';
+      const img = document.createElement('img');
+      img.src = arrowIcon;
+      img.classList.add('arrow-svg');
+
+      arrowContainer.append(clickPara, img);
+      taskMain.append(arrowContainer);
+    } else if (counter === 1) {
+      taskDiv.classList.add('completed');
+      taskMain.classList.add('done');
+      circle.className = 'circle-done';
+    }
+
     selectContainer.append(dateDiv, priorityDiv);
     taskMain.append(circle, taskName, selectContainer);
     taskDiv.append(taskMain, svgs);
-    taskContainer.append(taskDiv);
+    tasksContainer.append(taskDiv);
     input.value = '';
     dialog.close();
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
