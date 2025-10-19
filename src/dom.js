@@ -11,21 +11,24 @@ const dom = (function () {
   const submitBtn = document.querySelector('.submit-btn');
   const tasksContainer = document.querySelector('.tasks-container');
 
-  let counter = 0;
+  let flag = todoManager.getFlag();
 
   todoManager.getAll().forEach((item) => {
     createTask(item.title, item.uniqueId, item.dueDate, item.priority);
-    counter++;
+
+    if (!flag && item.uniqueId === '1') {
+      const circleFirst = document.querySelector('.circle');
+
+      function handleCircleClick() {
+        circleFirst.previousElementSibling.remove();
+        circleFirst.removeEventListener('click', handleCircleClick);
+        localStorage.setItem('flag', JSON.stringify(true));
+        console.log(JSON.parse(localStorage.getItem('flag')));
+      }
+
+      circleFirst.addEventListener('click', handleCircleClick);
+    }
   });
-
-  const circleFirst = document.querySelector('.circle');
-
-  function handleCircleClick() {
-    circleFirst.previousElementSibling.remove();
-    circleFirst.removeEventListener('click', handleCircleClick);
-  }
-
-  circleFirst.addEventListener('click', handleCircleClick);
 
   tasksContainer.addEventListener('click', (e) => {
     const taskDiv = e.target.closest('.task');
@@ -41,6 +44,8 @@ const dom = (function () {
       const circle = e.target;
       const taskMain = e.target.closest('.task-main');
       taskDiv.classList.toggle('completed');
+
+      // Make tasts persist their done/undone state on reload
 
       circle.className === 'circle'
         ? (circle.className = 'circle-done')
@@ -64,7 +69,7 @@ const dom = (function () {
     const priority = document.getElementById('priority');
     const id = crypto.randomUUID();
 
-    const toDoList = todoManager.addTodo(
+    const newTodo = todoManager.addTodo(
       input.value,
       dueDate.value,
       priority.value,
@@ -73,18 +78,18 @@ const dom = (function () {
 
     let formattedDate;
 
-    if (toDoList.dueDate) {
-      const parsedDate = new Date(toDoList.dueDate);
+    if (newTodo.dueDate) {
+      const parsedDate = new Date(newTodo.dueDate);
       if (isValid(parsedDate)) {
         formattedDate = format(parsedDate, 'MMM dd yyyy');
       }
     }
 
     createTask(
-      toDoList.title,
-      toDoList.uniqueId,
+      newTodo.title,
+      newTodo.uniqueId,
       formattedDate,
-      toDoList.priority
+      newTodo.priority
     );
     console.log(todoManager.getAll());
 
@@ -115,7 +120,7 @@ const dom = (function () {
 
     let svgs = createSvgs(id);
 
-    if (counter === 0) {
+    if (flag === false && id === '1') {
       const arrowContainer = document.createElement('div');
       arrowContainer.className = 'arrow-container';
       const clickPara = document.createElement('p');
@@ -126,7 +131,7 @@ const dom = (function () {
 
       arrowContainer.append(clickPara, img);
       taskMain.append(arrowContainer);
-    } else if (counter === 1) {
+    } else if (id === '2') {
       taskDiv.classList.add('completed');
       taskMain.classList.add('done');
       circle.className = 'circle-done';
