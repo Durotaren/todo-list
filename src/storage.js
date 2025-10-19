@@ -7,27 +7,30 @@ let flag = localStorage.getItem('flag') === 'true';
 let defaults = [
   {
     title: 'Wash the dishes',
-    dueDate: '22/02/2090',
+    dueDate: '2090-02-22',
     priority: 'Low priority',
     uniqueId: '1',
+    state: 'incomplete',
   },
   {
     title: 'Walk the dog',
-    dueDate: '22/02/2090',
+    dueDate: '2090-02-22',
     priority: 'High priority',
     uniqueId: '2',
+    state: 'complete',
   },
   {
     title: 'Buy groceries',
-    dueDate: '22/02/2090',
+    dueDate: '2090-02-22',
     priority: 'Low priority',
     uniqueId: '3',
+    state: 'incomplete',
   },
 ];
 
 export const todoManager = {
-  addTodo(title, dueDate, priority, id) {
-    const task = new ToDo(title, dueDate, priority, id);
+  addTodo(title, dueDate, priority, id, state) {
+    const task = new ToDo(title, dueDate, priority, id, state);
     library.push(task);
     this.save();
     return task;
@@ -39,6 +42,17 @@ export const todoManager = {
 
   getFlag() {
     return flag;
+  },
+
+  switchState(title) {
+    const foundItem = library.find((item) => item.title === title);
+    console.log(foundItem);
+
+    foundItem.state === 'complete'
+      ? (foundItem.state = 'incomplete')
+      : (foundItem.state = 'complete');
+
+    this.save();
   },
 
   removeTodo(id) {

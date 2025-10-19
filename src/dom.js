@@ -14,7 +14,16 @@ const dom = (function () {
   let flag = todoManager.getFlag();
 
   todoManager.getAll().forEach((item) => {
-    createTask(item.title, item.uniqueId, item.dueDate, item.priority);
+    let date = new Date(item.dueDate);
+    console.log(date);
+
+    createTask(
+      item.title,
+      item.uniqueId,
+      format(date, 'MMM dd yyyy'),
+      item.priority,
+      item.state
+    );
 
     if (!flag && item.uniqueId === '1') {
       const circleFirst = document.querySelector('.circle');
@@ -45,12 +54,14 @@ const dom = (function () {
       const taskMain = e.target.closest('.task-main');
       taskDiv.classList.toggle('completed');
 
-      // Make tasts persist their done/undone state on reload
-
       circle.className === 'circle'
         ? (circle.className = 'circle-done')
         : (circle.className = 'circle');
       taskMain.classList.toggle('done');
+
+      const title = circle.nextElementSibling.textContent;
+      todoManager.switchState(title);
+      console.log(title);
     }
   });
 
@@ -68,12 +79,14 @@ const dom = (function () {
     const dueDate = document.getElementById('due-date');
     const priority = document.getElementById('priority');
     const id = crypto.randomUUID();
+    const state = 'incomplete';
 
     const newTodo = todoManager.addTodo(
       input.value,
       dueDate.value,
       priority.value,
-      id
+      id,
+      state
     );
 
     let formattedDate;
@@ -97,7 +110,7 @@ const dom = (function () {
     priority.value = 'High priority';
   });
 
-  function createTask(title, id, dueDate, priority) {
+  function createTask(title, id, dueDate, priority, state) {
     const taskDiv = document.createElement('div');
     taskDiv.classList.add('task');
     const taskMain = document.createElement('div');
@@ -131,7 +144,9 @@ const dom = (function () {
 
       arrowContainer.append(clickPara, img);
       taskMain.append(arrowContainer);
-    } else if (id === '2') {
+    }
+
+    if (state === 'complete') {
       taskDiv.classList.add('completed');
       taskMain.classList.add('done');
       circle.className = 'circle-done';
