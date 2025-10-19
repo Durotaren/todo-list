@@ -44,9 +44,8 @@ export const todoManager = {
     return flag;
   },
 
-  switchState(title) {
-    const foundItem = library.find((item) => item.title === title);
-    console.log(foundItem);
+  switchState(id) {
+    const foundItem = library.find((item) => item.uniqueId === id);
 
     foundItem.state === 'complete'
       ? (foundItem.state = 'incomplete')

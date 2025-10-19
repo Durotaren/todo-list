@@ -10,12 +10,17 @@ const dom = (function () {
   const closeBtn = document.querySelector('.close-btn');
   const submitBtn = document.querySelector('.submit-btn');
   const tasksContainer = document.querySelector('.tasks-container');
+  const logout = document.querySelector('.logout-svg');
 
   let flag = todoManager.getFlag();
 
+  logout.addEventListener('click', () => {
+    localStorage.clear();
+    location.reload();
+  });
+
   todoManager.getAll().forEach((item) => {
     let date = new Date(item.dueDate);
-    console.log(date);
 
     createTask(
       item.title,
@@ -32,7 +37,6 @@ const dom = (function () {
         circleFirst.previousElementSibling.remove();
         circleFirst.removeEventListener('click', handleCircleClick);
         localStorage.setItem('flag', JSON.stringify(true));
-        console.log(JSON.parse(localStorage.getItem('flag')));
       }
 
       circleFirst.addEventListener('click', handleCircleClick);
@@ -45,7 +49,6 @@ const dom = (function () {
       const id = e.target.closest('.svgs').dataset.id;
       todoManager.removeTodo(id);
       taskDiv.remove();
-      console.log(todoManager.getAll());
     } else if (
       e.target.classList.contains('circle') ||
       e.target.classList.contains('circle-done')
@@ -59,9 +62,8 @@ const dom = (function () {
         : (circle.className = 'circle');
       taskMain.classList.toggle('done');
 
-      const title = circle.nextElementSibling.textContent;
-      todoManager.switchState(title);
-      console.log(title);
+      const id = circle.parentElement.nextElementSibling.dataset.id;
+      todoManager.switchState(id);
     }
   });
 
@@ -104,7 +106,6 @@ const dom = (function () {
       formattedDate,
       newTodo.priority
     );
-    console.log(todoManager.getAll());
 
     dueDate.value = '';
     priority.value = 'High priority';
