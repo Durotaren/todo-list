@@ -11,6 +11,7 @@ const dom = (function () {
   const submitBtn = document.querySelector('.submit-btn');
   const tasksContainer = document.querySelector('.tasks-container');
   const logout = document.querySelector('.logout-svg');
+  const doneCounter = document.querySelector('.done-counter');
 
   let flag = todoManager.getFlag();
 
@@ -43,12 +44,29 @@ const dom = (function () {
     }
   });
 
+  updateCounter();
+
+  function updateCounter() {
+    let [completedTasks, totalTasks] = todoManager.saveCounter();
+    if (totalTasks === 0) {
+      doneCounter.textContent = '-';
+    } else {
+      doneCounter.textContent = `${completedTasks}/${totalTasks}`;
+    }
+    if (completedTasks === totalTasks) {
+      doneCounter.style.backgroundColor = '#57ca4b';
+    } else {
+      doneCounter.style.backgroundColor = '#ff5730';
+    }
+  }
+
   tasksContainer.addEventListener('click', (e) => {
     const taskDiv = e.target.closest('.task');
     if (e.target.classList.contains('svg-delete')) {
       const id = e.target.closest('.svgs').dataset.id;
       todoManager.removeTodo(id);
       taskDiv.remove();
+      updateCounter();
     } else if (
       e.target.classList.contains('circle') ||
       e.target.classList.contains('circle-done')
@@ -64,6 +82,7 @@ const dom = (function () {
 
       const id = circle.parentElement.nextElementSibling.dataset.id;
       todoManager.switchState(id);
+      updateCounter();
     }
   });
 
@@ -109,6 +128,7 @@ const dom = (function () {
 
     dueDate.value = '';
     priority.value = 'High priority';
+    updateCounter();
   });
 
   function createTask(title, id, dueDate, priority, state) {
@@ -138,7 +158,7 @@ const dom = (function () {
       const arrowContainer = document.createElement('div');
       arrowContainer.className = 'arrow-container';
       const clickPara = document.createElement('p');
-      clickPara.textContent = 'Click the Circle!';
+      clickPara.textContent = 'Click on the Circle!';
       const img = document.createElement('img');
       img.src = arrowIcon;
       img.classList.add('arrow-svg');

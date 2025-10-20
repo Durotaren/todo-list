@@ -32,7 +32,7 @@ export const todoManager = {
   addTodo(title, dueDate, priority, id, state) {
     const task = new ToDo(title, dueDate, priority, id, state);
     library.push(task);
-    this.save();
+    this.saveTodos();
     return task;
   },
 
@@ -51,15 +51,21 @@ export const todoManager = {
       ? (foundItem.state = 'incomplete')
       : (foundItem.state = 'complete');
 
-    this.save();
+    this.saveTodos();
   },
 
   removeTodo(id) {
     library = library.filter((toDo) => toDo.uniqueId !== id);
-    this.save();
+    this.saveTodos();
   },
 
-  save() {
+  saveCounter() {
+    let completedTasks = library.filter((item) => item.state === 'complete');
+    let totalTasks = library.length;
+    return [completedTasks.length, totalTasks];
+  },
+
+  saveTodos() {
     localStorage.setItem('todos', JSON.stringify(library));
   },
 
